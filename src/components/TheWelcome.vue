@@ -159,8 +159,9 @@
 <style>
   h2 {
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     text-transform: capitalize;
+    line-height: 36px;
   }
   
   .contain-all {
@@ -175,6 +176,7 @@
     position: relative;
     height: 30vh;
     width: 100%;
+    z-index: -1;
   }
 
   .bball-image {
@@ -206,7 +208,7 @@
 
   .menu-container {
     width: 100%;
-    height: 200px;
+    height: 140px;
     display: flex;
     gap: 12px;
   }
