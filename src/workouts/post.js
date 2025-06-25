@@ -4,23 +4,23 @@ import { courtZones } from '../utils/courtZones.js';
 export const post = {
   workouts: [
     { title: "Drop Steps" },
-    { title: "Up and Under Shots", permittedZones: [1, 2, 3] },
-    { title: "Hook Shots", permittedZones: [1, 2, 3] },
+    { title: "Up and Under Shots" },
+    { title: "Hook Shots" },
     { title: "Power Move with Contact" },
     { title: "Spin Move in the Post" },
-    { title: "Jump Hooks", permittedZones: [1, 2, 3] },
-    { title: "Face Up and Drives", permittedZones: [4, 5, 6, 7, 8] },
-    { title: "Seal and Back Downs", permittedZones: [1, 2, 3] },
+    { title: "Jump Hooks" },
+    { title: "Face Up and Drives" },
+    { title: "Seal and Back Downs" },
     { title: "Post Entry Passing and Catch" },
     { title: "Post Fadeaway Shot" },
     { title: "Post Pivot and Spin" },
     { title: "Turnaround Jumper" },
     { title: "Flash to the Basket and Finish" },
     { title: "Double Team Escape Moves" },
-    { title: "Hook Shot off the Glass", permittedZones: [1, 2, 3] },
+    { title: "Hook Shot off the Glass" },
     { title: "Post Jab Step and Drives" },
-    { title: "Baseline Power Move", permittedZones: [1, 3, 4, 8] },
-    { title: "Post Shot Fake and Drive", permittedZones: [4, 5, 6, 7, 8] },
+    { title: "Baseline Power Move" },
+    { title: "Post Shot Fake and Drive" },
     { title: "Post Drop Step to Reverse Layup" },
   ],
 }
@@ -34,7 +34,7 @@ export class Post extends Workout {
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 
   numberOfSpots = this.workout.numberOfSpots || 2
-  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 8 ).map((zone) => zone.id )
+  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 12 ).map((zone) => zone.id )
   actions = this.workout.actions || ["Make", "Attempt"]
   minMakeAmount = this.workout.minMakeAmount || 5
   maxMakeAmount = this.workout.maxMakeAmount || 10

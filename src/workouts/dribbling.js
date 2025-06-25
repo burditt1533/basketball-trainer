@@ -58,7 +58,7 @@ export class Dribbling extends Workout {
     "no backboard",
   ]
   frequency = this.workout.frequency || 8
-  isStandalone = this.workout.isStandalone || false
+  isStandalone = this.workout.isStandalone || true
 
   
   // formatWorkout () {

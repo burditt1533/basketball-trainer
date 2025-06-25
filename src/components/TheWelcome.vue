@@ -26,16 +26,13 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const generateWorkout = () => {
+  const generateWorkout = (klassname) => {
     //  not sure why this has to happen 1st
     theWorkout.value = getWorkout()
-
     const klasses = Object.keys(theClasses)
-    let klassName = klasses[getRandomInteger(0, klasses.length - 1)]
-    
-    // const child = new Workout();
-    klassName = 'A2b'
+    let klassName = klassname ?? klasses[getRandomInteger(0, klasses.length - 1)]
     const workoutKlass = new theClasses[klassName]();
+
     theWorkout.value = workoutKlass.formatWorkout()
     drawCanvas()
     theWorkout.value.addSpotsToCanvas(canvasCtx.value, canvas.value)
@@ -120,19 +117,38 @@
 
 <template>
   <div class="contain-all">
-    <div @click="generateWorkout" class="container">
+    <div @click="generateWorkout()" class="container">
       <img v-if="isShowCourtLines" :src="basketballCourtZones" id="bball" class="bball-image with-lines">
       <img :src="basketballCourt2" id="bball" class="bball-image">
       <canvas id="myCanvas" class="bball-canvas"></canvas>
     </div>
 
     <div class="rule-container">
-      <h2 v-for="rule in theWorkout.rules" :key="rule">
-        {{ rule }}
-      </h2>
+      <template v-if="typeof(theWorkout.rules) === 'object'">
+        <h2 v-for="rule in theWorkout.rules" :key="rule">
+          {{ rule }}
+        </h2>
+      </template>
+      <h2 v-else>{{ theWorkout.rules }}</h2>
     </div>
     <div class="menu-container">
-      <!-- <h2>{{ theWorkout.rules }}</h2> -->
+      <!-- <div class="workout-container">
+        hello
+      </div>
+      <div class="workout-container">
+        hello
+      </div> -->
+
+      <div class="scroll-container">
+        <div
+          v-for="klass in Object.keys(theClasses)"
+          :key="Klass"
+          class="workout-container"
+          @click="generateWorkout(klass)"
+        >
+          {{ klass }}
+        </div>
+      </div>
       <!-- <button @click="generateWorkout">Generate Workout</button><br>
       <button @click="isShowCourtLines = !isShowCourtLines">Show Lines</button><br>
       <button @click="thingy">New Spot</button><br> -->
@@ -144,19 +160,20 @@
   h2 {
     text-align: center;
     font-size: 40px;
-  }
-  .menu-container {
-    width: 100%;
+    text-transform: capitalize;
   }
   
   .contain-all {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+    overflow: hidden;
   }
 
   .container {
     position: relative;
-    height: 50vh;
+    height: 30vh;
     width: 100%;
   }
 
@@ -186,4 +203,34 @@
     width: 50px;
     filter: hue-rotate(200deg);
   }
+
+  .menu-container {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .workout-container {
+    min-width: 150px;
+    height: 100%;
+    color: rgb(228, 228, 228);
+    display: inline-flex; /* Makes the child divs appear next to each other */
+    width: 150px;
+    background-color: #0247a9;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .scroll-container {
+    width: 100%; /* Or any desired width */
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
 </style>

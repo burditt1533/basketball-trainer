@@ -4,7 +4,7 @@ import { courtZones } from '../utils/courtZones.js';
 export const warmups = {
   workouts: [
     {
-      title: "Form shoots (close range)",
+      title: "Form shots (close range)",
       numberOfSpots: 3,
       zones: [2, 3, 4, 5]
     },
@@ -30,15 +30,12 @@ export class Warmups extends Workout {
   maxInARow = this.workout.maxInARow || 6
   maxPerTimedPeriod = this.workout.maxPerTimedPeriod || 10
   addedDifficulties = this.workout.addedDifficulties || [
-    "Over Defender",
-    "With Contact",
     "Using Heavy Ball",
     "In A Row",
-    "around defender",
-    "no backboard",
   ]
   frequency = this.workout.frequency || 8
-  isStandalone = this.workout.isStandalone || false
+  isStandalone = this.workout.isStandalone ?? false
+  isTimeable = this.workout.isTimeable ?? false
 
   
   // formatWorkout () {

@@ -9,6 +9,8 @@ export const conditioning = {
     { title: "Box jumps" },
     { title: "Sprint-jog intervals" },
     { title: "Burpee to sprint" },
+    { title: "Sixteens" },
+    { title: "Eights" },
   ]
 }
 

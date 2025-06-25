@@ -82,8 +82,7 @@ export class Workout {
 
   addSpotsToCanvas = (canvasCtx, canvas) => {
     for (let i = 0; i < this.numberOfSpots; i++) {
-      // const randomZoneId = this.permittedZones.randomItem()
-      const randomZoneId = 39
+      const randomZoneId = this.permittedZones.randomItem()
       const randomZone = courtZones.find((localZone) => localZone.id === randomZoneId)
       const permittedSpots = this.permittedSpots || randomZone.points
       const randomPoint = getRandomPointInPolygon(permittedSpots)
@@ -91,8 +90,6 @@ export class Workout {
       this.path.push(randomPoint)
       this.addPlayerImage(canvasCtx, canvas, randomPoint)
     }
-    
-    this.drawRoute(canvasCtx)
   }
   
   addPlayerImage(canvasCtx, canvas, coordinates) {
@@ -125,7 +122,7 @@ export class Workout {
     const dotRadius = 3;
     canvasCtx.beginPath();
     canvasCtx.arc(coordinates.x * scaleCooeficient, coordinates.y * scaleCooeficient, dotRadius, 0, 2 * Math.PI, false);
-    canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.9)';
+    // canvasCtx.fillStyle = 'rgba(255, 0, 0, 0.9)';
     // canvasCtx.fill();
   }
 
@@ -139,7 +136,6 @@ export class Workout {
     const controlY = this.route[3];
     const endX = this.route[4];
     const endY = this.route[5];
-    console.log(this)
 
     const a = getQuadraticXY(0.7, startX, startY, controlX, controlY, endX, endY)
     // Calculate angle for arrowhead rotation
@@ -152,26 +148,12 @@ export class Workout {
       };
     }
 
-
     // Draw the curve
     canvasCtx.beginPath();
     canvasCtx.moveTo(startX, startY);
     canvasCtx.quadraticCurveTo(controlX, controlY, a.x, a.y);
     canvasCtx.lineWidth = 4;
     canvasCtx.stroke();
-
-    // Draw the arrowhead
-    canvasCtx.save(); // Save the current context state
-    canvasCtx.translate(a.x, a.y);
-    canvasCtx.rotate(angled);
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(10, 10);
-    canvasCtx.lineTo(-25, 20);
-    canvasCtx.lineTo(-25, -20);
-    canvasCtx.closePath();
-    canvasCtx.fillStyle = "blue";
-    canvasCtx.fill();
-    canvasCtx.restore(); // Restore the context state
   }
   
   formatWorkout () {
@@ -185,9 +167,11 @@ export class Workout {
     } else if (isTimed) {
       const x = amount * this.frequency
       let seconds = Math.ceil(x + x / 5)
-      rules = `Make ${amount} ${this.variation()} in ${ seconds } seconds`
+      rules = [`Make ${amount}`,`${this.variation()}`, `in ${ seconds } seconds` ]
+      // rules = `Make ${amount} ${this.variation()} in ${ seconds } seconds`
     } else {
-      rules = `${this.action()} ${amount} ${this.variation()}${this.difficulty() ? ',': ''} ${ this.difficulty() }`
+      rules = [`${this.action()} ${amount}`, `${this.variation()}`, `${ this.difficulty() }`]
+      // rules = `${this.action()} ${amount} ${this.variation()}${this.difficulty() ? ',': ''} ${ this.difficulty() }`
     }
 
     return {

@@ -11,7 +11,7 @@ const getRandomInteger =  (min, max) => {
 export const shooting = {
   workouts: [
     {
-      title: "Spot-up shooting",
+      title: "Spot-up shots",
       numberOfSpots: getRandomInteger(2, 5),
       permittedZones: courtZones.filter((zone) => zone.id > 12 && zone.id < 45)
         .map((zone) => zone.id)
@@ -23,7 +23,7 @@ export const shooting = {
         .map((zone) => zone.id)
     },
     {
-      title: "Catch and mid range shots",
+      title: "Catch and shoot mid range shots",
       numberOfSpots: getRandomInteger(2, 5),
       permittedZones: courtZones.filter((zone) => zone.id > 12 && zone.id < 39)
         .map((zone) => zone.id)
@@ -60,7 +60,6 @@ export class Shooting extends Workout {
     "With Contact",
     "Using Heavy Ball",
     "In A Row",
-    "around defender",
     "no backboard",
   ]
   frequency = this.workout.frequency || 8
