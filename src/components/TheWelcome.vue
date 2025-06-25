@@ -148,7 +148,7 @@
   .menu-container {
     width: 100%;
   }
-  
+
   .contain-all {
     display: flex;
     flex-direction: column;
@@ -162,7 +162,6 @@
 
   .bball-image {
     z-index: 0;
-    /* height: 800px; */
     width: 100%;
     max-width: 1120px;
     position: absolute;
