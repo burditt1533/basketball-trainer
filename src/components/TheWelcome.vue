@@ -162,7 +162,7 @@
 
   .bball-image {
     z-index: 0;
-    /* height: 800px; */
+    /* height: 800px;; */
     width: 100%;
     max-width: 1120px;
     position: absolute;
