@@ -7,7 +7,7 @@ import { Layups } from './layups.js';
 import { Post } from './post.js';
 import { Shooting } from './shooting.js';
 import { Warmups } from './warmups.js';
-import { A2b } from './a2B.js';
+import { A2b } from './a2b.js';
 import { WithIc3 } from './withIc3.js';
 
 export const theClasses = {
