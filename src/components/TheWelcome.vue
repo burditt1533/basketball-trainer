@@ -5,11 +5,11 @@
   import BallPlayer from '../assets/player.png'
   import PlayerLayup from '../assets/player_layup.png'
   import smallMan from '../assets/small-man2.png'
+  import courtStraight from '../assets/court-straight.png'
   import { computed, ref, onMounted } from 'vue'
   import { getRandomPointInPolygon } from '../utils/canvas.js';
   import { courtZones } from '../utils/courtZones.js';
-  import { getWorkout } from '../utils/generateWorkout.js';
-  import { Workout } from '../utils/generateWorkout2.js';
+  import { Workout } from '../utils/generateWorkout.js';
   import { Shooting } from '../workouts/shooting.js';
   import { theClasses } from '../workouts/workoutClasses.js';
 
@@ -18,7 +18,8 @@
   const theWorkout = ref({})
   const isShowCourtLines = ref(false)
   const scaleCooeficient = 4
-
+  let workoutKlass = null
+  const smallPlayer = ref({})
 
   const getRandomInteger = (min, max) => {
     min = Math.ceil(min);
@@ -27,20 +28,23 @@
   }
 
   const generateWorkout = (klassname) => {
-    //  not sure why this has to happen 1st
-    theWorkout.value = getWorkout()
-    const klasses = Object.keys(theClasses)
-    let klassName = klassname ?? klasses[getRandomInteger(0, klasses.length - 1)]
-    const workoutKlass = new theClasses[klassName]();
+    if (!!klassname) {
+      const theClass = klassname
+      workoutKlass = new theClass()
+    } else {
+      const klasses = Object.keys(theClasses)
+      let klassName = klassname ?? klasses[getRandomInteger(0, klasses.length - 1)]
+      workoutKlass = new theClasses[klassName]();
+    }
 
     theWorkout.value = workoutKlass.formatWorkout()
     drawCanvas()
-    theWorkout.value.addSpotsToCanvas(canvasCtx.value, canvas.value)
+    theWorkout.value.addSpotsToCanvas(canvasCtx.value, canvas.value, smallPlayer.value)
   }
   
   const thingy =() => {
+    canvasCtx.value.clearRect(0, 0, canvas.value.width, canvas.value.height); // Clear canvas
     theWorkout.value.addSpotsToCanvas(canvasCtx.value, canvas.value)
-
   }
 
   const drawCanvas = () => {
@@ -58,11 +62,12 @@
       canvasCtx.value.closePath();
       // canvasCtx.value.stroke();
       canvasCtx.value.fillStyle = 'rgba(0, 0, 255, 0.5)';
-      // canvasCtx.value.fill();
+      canvasCtx.value.fill();
     })
   }
 
   onMounted(() => {
+    console.log(theClasses)
     generateWorkout()
     let points = []
     let all = []
@@ -119,7 +124,8 @@
   <div class="contain-all">
     <div @click="generateWorkout()" class="container">
       <img v-if="isShowCourtLines" :src="basketballCourtZones" id="bball" class="bball-image with-lines">
-      <img :src="basketballCourt2" id="bball" class="bball-image">
+      <img v-else :src="basketballCourt2" id="bball" class="bball-image">
+      <!-- <img :src="courtStraight" id="bball" class="bball-image"> -->
       <canvas id="myCanvas" class="bball-canvas"></canvas>
     </div>
 
@@ -132,26 +138,19 @@
       <h2 v-else>{{ theWorkout.rules }}</h2>
     </div>
     <div class="menu-container">
-      <!-- <div class="workout-container">
-        hello
-      </div>
-      <div class="workout-container">
-        hello
-      </div> -->
-
       <div class="scroll-container">
         <div
-          v-for="klass in Object.keys(theClasses)"
+          v-for="klass in theClasses"
           :key="Klass"
           class="workout-container"
           @click="generateWorkout(klass)"
         >
-          {{ klass }}
+          {{ new klass().title }}
         </div>
       </div>
       <!-- <button @click="generateWorkout">Generate Workout</button><br>
       <button @click="isShowCourtLines = !isShowCourtLines">Show Lines</button><br>
-      <button @click="thingy">New Spot</button><br> -->
+      <button @click="thingy">New Spot</button><br>  -->
     </div>
   </div>
 </template>
@@ -174,17 +173,14 @@
 
   .container {
     position: relative;
-    height: 30vh;
     width: 100%;
-    z-index: -1;
   }
 
   .bball-image {
     z-index: 0;
-    /* height: 800px;; */
     width: 100%;
     max-width: 1120px;
-    position: absolute;
+    max-height: 800px;
   }
 
   .with-lines {
@@ -198,12 +194,17 @@
     width: 100%;
     max-width: 1120px;
     transform-origin: top left;
+    top: 0;
+    opacity: 0;
   }
 
   .small-man {
     position: absolute;
-    width: 50px;
+    width: 4vw;
     filter: hue-rotate(200deg);
+    top: 325px;
+    left: 200px;
+    z-index:10;
   }
 
   .menu-container {
@@ -224,6 +225,7 @@
     align-items: center;
     border-radius: 4px;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .scroll-container {

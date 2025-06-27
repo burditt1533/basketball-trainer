@@ -1,4 +1,4 @@
-import { Workout } from '../utils/generateWorkout2.js';
+import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 
 export const post = {
@@ -29,11 +29,12 @@ export class Post extends Workout {
   constructor() {
     super(); // Call the parent class's constructor
   }
+  title = "Post Moves"
 
   workouts = post.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 
-  numberOfSpots = this.workout.numberOfSpots || 2
+  numberOfSpots = this.workout.numberOfSpots || 1
   permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 12 ).map((zone) => zone.id )
   actions = this.workout.actions || ["Make", "Attempt"]
   minMakeAmount = this.workout.minMakeAmount || 5

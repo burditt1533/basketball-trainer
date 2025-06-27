@@ -1,4 +1,4 @@
-import { Workout } from '../utils/generateWorkout2.js';
+import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 
 export const layups = {
@@ -17,10 +17,6 @@ export const layups = {
       ],
       frequency: 6,
     },
-    {
-      title: "Floaters",
-      frequency: 4, // 4 seconds for 1 floater
-    },
     { title: "Reverse Layups" },
     { title: "Inside Hand Layups" },
     { title: "Wrong-Foot Layups" },
@@ -32,11 +28,13 @@ export class Layups extends Workout {
   constructor() {
     super();
   }
+  title = "Layups"
+
   workouts = layups.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 
   //workout params
-  numberOfSpots = this.workout.numberOfSpots || 2
+  numberOfSpots = this.workout.numberOfSpots || 1
   permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 13 ).map((zone) => zone.id )
   actions = this.workout.actions || ["Make", "Attempt"]
   minMakeAmount = this.workout.minMakeAmount || 5

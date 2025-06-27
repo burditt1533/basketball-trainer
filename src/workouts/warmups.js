@@ -1,13 +1,20 @@
-import { Workout } from '../utils/generateWorkout2.js';
+import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 
 export const warmups = {
   workouts: [
     {
       title: "Form shots (close range)",
-      numberOfSpots: 3,
       zones: [2, 3, 4, 5]
     },
+    { title: "Dribble around the court" },
+    { title: "Dribble down and back" },
+    { title: "Jog around the court" },
+    { title: "Karaoke Down and back" },
+    { title: "High Knees Down and back" },
+    { title: "Butt kicks Down and back" },
+    { title: "Zig Zag Dribble down and back" },
+    { title: "Between the legs down and back" },
   ]
 }
 
@@ -15,12 +22,14 @@ export class Warmups extends Workout {
   constructor() {
     super();
   }
+  title = "Warmups"
+
   workouts = warmups.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 
-  //workout params
-  numberOfSpots = this.workout.numberOfSpots || 2
-  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 9 ).map((zone) => zone.id )
+  // workout params
+  numberOfSpots = this.workout.numberOfSpots || 1
+  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 9 ).map((zone) => zone.id)
   actions = this.workout.actions || ["Make", "Attempt"]
   minMakeAmount = this.workout.minMakeAmount || 5
   maxMakeAmount = this.workout.maxMakeAmount || 10

@@ -1,4 +1,4 @@
-import { Workout } from '../utils/generateWorkout2.js';
+import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 
 export const dribbling = {
@@ -37,6 +37,8 @@ export class Dribbling extends Workout {
   constructor() {
     super();
   }
+  title = "Dribbling"
+
   workouts = dribbling.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 

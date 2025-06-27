@@ -7,10 +7,13 @@ import { Layups } from './layups.js';
 import { Post } from './post.js';
 import { Shooting } from './shooting.js';
 import { Warmups } from './warmups.js';
-import { A2b } from './a2b.js';
+import { A2b } from './a2B.js';
+import { WithIc3 } from './withIc3.js';
 
 export const theClasses = {
   Warmups,
+  A2b,
+  WithIc3,
   Shooting,
   Freethrows,
   Layups,
@@ -19,5 +22,4 @@ export const theClasses = {
   Defense,
   Combos,
   Post,
-  A2b
 }

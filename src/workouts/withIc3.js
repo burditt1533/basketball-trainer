@@ -1,31 +1,24 @@
 import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 
-export const conditioning = {
+export const withIc3 = {
   workouts: [
-    { title: "Suicide sprints" },
-    { title: "Shuttle runs" },
-    { title: "Jump rope" },
-    { title: "Box jumps" },
-    { title: "Sprint-jog intervals" },
-    { title: "Burpee to sprint" },
-    { title: "Sixteens" },
-    { title: "Eights" },
-  ]
+    { title: "Elbow Shots" },
+    { title: "Short Corner Shots" },
+  ],
 }
 
-export class Conditioning extends Workout {
+export class WithIc3 extends Workout {
   constructor() {
-    super();
+    super(); // Call the parent class's constructor
   }
-  title = "Conditioning"
+  title = "With IC3"
 
-  workouts = conditioning.workouts
+  workouts = withIc3.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
 
-  //workout params
   numberOfSpots = this.workout.numberOfSpots || 1
-  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 13 ).map((zone) => zone.id )
+  permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id < 12 ).map((zone) => zone.id )
   actions = this.workout.actions || ["Make", "Attempt"]
   minMakeAmount = this.workout.minMakeAmount || 5
   maxMakeAmount = this.workout.maxMakeAmount || 10
@@ -36,15 +29,11 @@ export class Conditioning extends Workout {
   maxPerTimedPeriod = this.workout.maxPerTimedPeriod || 10
   addedDifficulties = this.workout.addedDifficulties || [
     "Over Defender",
-    "With Contact",
-    "Using Heavy Ball",
-    "In A Row",
-    "around defender",
-    "no backboard",
+    "In A Row"
   ]
+  isTimeable = true
   frequency = this.workout.frequency || 8
-  isStandalone = this.workout.isStandalone || true
-
+  isStandalone = this.workout.isStandalone || false
   
   // formatWorkout () {
 

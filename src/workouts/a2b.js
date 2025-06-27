@@ -1,6 +1,7 @@
-import { Workout } from '../utils/generateWorkout2.js';
+import { Workout } from '../utils/generateWorkout.js';
 import { courtZones } from '../utils/courtZones.js';
 import { getRandomPointInPolygon } from '../utils/canvas.js';
+import smallMan from '../assets/small-man2.png'
 
 export const a2b = {
   workouts: [
@@ -12,6 +13,8 @@ export class A2b extends Workout {
   constructor() {
     super();
   }
+  title = "A 2 B"
+
   workouts = a2b.workouts
   workout = this.workouts[this.getRandomInteger(0, this.workouts.length - 1)]
   direction = null
@@ -22,10 +25,11 @@ export class A2b extends Workout {
       'Jab step',
       'Pump fake',
       'fake pass',
-      'sweep',
+      'low sweep',
+      'high sweep',
       null
     ]
-    const preWeights = [ 10, 1, 1, 1, 10 ]
+    const preWeights = [ 7, 1, 1, 10, 10, 8 ]
     let move = pre.selectWeightedRandom(preWeights)
     move = !!move ? move + ',' : ''
     return move
@@ -62,8 +66,11 @@ export class A2b extends Workout {
       'Floater',
       'Reverse Layup',
       'Fadeaway',
+      'Inside Hand Layup',
+      'Wrong foot Layup',
+      'Finger Roll Layup'
     ]
-    const finishesWeights = [10, 10, 5, 2, 4]
+    const finishesWeights = [10, 10, 5, 1, 4, 3, 3, 1]
     let move = finishes.selectWeightedRandom(finishesWeights)
     const hand = ['right', 'left'].randomItem()
     const group = ['Fadeaway', 'Pull up']
@@ -75,7 +82,7 @@ export class A2b extends Workout {
     return move
   }
 
-  addSpotsToCanvas = (canvasCtx, canvas) => {
+  addSpotsToCanvas = (canvasCtx, canvas, smallPlayer) => {
     let prevId = null
     for (let i = 0; i < this.numberOfSpots; i++) {
       const leftMost = [13, 21, 29, 37, 45]
@@ -96,7 +103,29 @@ export class A2b extends Workout {
         randomPoint = getRandomPointInPolygon(permittedSpots)
       } else {
         randomPoint = getRandomPointInPolygon(permittedSpots)
-        this.addPlayerImage(canvasCtx, canvas, randomPoint)
+        // this.addPlayerImage(canvasCtx, canvas, randomPoint)
+
+        
+        const allPlayers = document.querySelectorAll('.small-man');
+        const allPaths = document.querySelectorAll('.route-path');
+        allPlayers.forEach(player => player.remove())
+        allPaths.forEach(path => path.remove())
+        
+        const ballImage = document.querySelector('.bball-image');
+        const rect = ballImage.getBoundingClientRect();
+        const scaler = rect.width/1120
+        
+        const rotate = 15 || this.getRandomInteger(0, 360)
+        const container = document.querySelector('.container');
+        const newImage = document.createElement('img');
+        const left = randomPoint.x * 4 - 28
+        const top = randomPoint.y * 4 - 110
+        newImage.src = smallMan;
+        newImage.classList = 'small-man';
+        newImage.style.left = `${left * scaler}px`
+        newImage.style.top = `${top * scaler}px`
+        newImage.style.filter = `hue-rotate(${rotate}deg)`
+        container.appendChild(newImage);
       }
       this.path.push(randomPoint)
       prevId = randomZoneId
@@ -116,7 +145,7 @@ export class A2b extends Workout {
     const endX = this.route[4];
     const endY = this.route[5];
 
-    const driveDistance = this.finish.includes('Layup') ? 1 : 0.6
+    const driveDistance = this.finish.includes('Layup') ? 0.8 : 0.5
 
     const halfPoint = getQuadraticXY(driveDistance, startX, startY, controlX, controlY, endX, endY)
     // Calculate angle for arrowhead rotation
@@ -129,6 +158,39 @@ export class A2b extends Workout {
       };
     }
 
+    const container = document.querySelector('.container');
+    const ballImage = document.querySelector('.bball-image');
+    const rect = ballImage.getBoundingClientRect();
+    const scaler = rect.width/1120
+
+    const svgString = `<svg height="210" width="400" xmlns="http://www.w3.org/2000/svg">
+      <path d="M${startX * scaler} ${startY * scaler} Q ${controlX * scaler} ${controlY * scaler} ${halfPoint.x * scaler} ${halfPoint.y * scaler}"
+      marker-end="url(#arrowhead)"
+      style="fill:none; stroke:rgba(255, 0, 0, 0.7); stroke-width: ${10 * scaler}"
+      stroke-linecap="round"
+       />
+      <defs>
+       <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+               refX="0" refY="3.5" orient="auto">
+         <polygon points="0 0, 4 3.5, 0 7" fill="rgba(255, 0, 0, 1)"/>
+       </marker>
+     </defs>
+    </svg>`
+
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = svgString;
+    const newElement = tempContainer.firstElementChild; // Or access specific children
+    newElement.classList = 'route-path';
+
+    newElement.style.position = `absolute`
+    newElement.style.width = `100%`
+    newElement.style.height = `100%`
+    newElement.style.left = `0`
+    newElement.style.top = `0`
+
+
+    // Append to the SVG container
+    container.appendChild(newElement);
 
     // Draw the curve
     canvasCtx.beginPath();
@@ -152,7 +214,6 @@ export class A2b extends Workout {
   }
 
   //workout params
-
   numberOfSpots = this.workout.numberOfSpots || 3
   permittedZones = this.workout.permittedZones || courtZones.filter((zone) => zone.id > 13 ).map((zone) => zone.id )
   actions = this.workout.actions || ["Make", "Shoot"]
